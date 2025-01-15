@@ -90,7 +90,7 @@ async def punch(client: Client, message: Message, out: bool = False) -> None:
         }.get(message.command[1])
 
         if out is None:
-            raise BadRequest(
+            await message.reply_text(
                 'The <em>/punch</em> command accepts a single parameter indicating the punch status.<br>Allowed values ​​are: <em>out</em> (or <em>off</em> or <em>0</em>) and <em>in</em> (or <em>on</em> or <em>1</em>)s.'
             )
             return
