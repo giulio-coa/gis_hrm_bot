@@ -113,10 +113,6 @@ async def punch(client: Client, message: Message, out: bool = False) -> None:
     if not message:
         await client.send_message(
             chat_id=config.get('MY_ID'),
-            text=f'out: {out}'
-        )
-        await client.send_message(
-            chat_id=config.get('MY_ID'),
             text='<strong>Scheduled action.</strong><br><em>Command:</em> <code>/punch {}</code><br><em>Result:</em> Done.'.format(
                 'out' if out else 'in'
             )
