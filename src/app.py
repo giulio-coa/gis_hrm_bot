@@ -12,7 +12,7 @@ from pyrogram.handlers import MessageHandler
 
 from uvloop import install
 
-from .plugins import clean_messages, manage_jobs, punch, start, update_credentials
+from .plugins import manage_jobs, punch, start, update_credentials
 
 
 if __name__ == '__main__':
@@ -70,16 +70,7 @@ async def main():
     global app, config
 
     async with app:
-       # Register handlers
-        app.add_handler(
-            MessageHandler(
-                clean_messages,
-                filters.chat(config.get('MY_ID'))
-                & filters.outgoing
-                & filters.private
-                & filters.regex('^⁠$')
-            )
-        )
+        # Register handlers
         app.add_handler(
             MessageHandler(
                 manage_jobs,

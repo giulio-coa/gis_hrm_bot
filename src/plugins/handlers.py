@@ -33,12 +33,6 @@ async def set_env_vars(message: Message, key: str, value: Any) -> None:
 ############
 # Handlers #
 ############
-async def clean_messages(_, message: Message) -> None:
-    info('Deleted message:\n{}'.format(message))
-
-    await message.delete(revoke=True)
-
-
 async def manage_jobs(_, message: Message) -> None:
     info('Received message:\n{}'.format(message))
 
@@ -155,7 +149,10 @@ async def start(_, message: Message) -> None:
     info('Received message:\n{}'.format(message))
 
     await message.reply_text(
-        '⁠',
+        'Hello {},\nThe following keyboard will help you to send the main commands.'.format(
+            f"{message.from_user.first_name or ''} {message.from_user.last_name or ''}".strip()
+            or f'@{message.from_user.username}',
+        ),
         reply_markup=ReplyKeyboardMarkup(
             [
                 [
