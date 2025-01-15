@@ -119,7 +119,6 @@ async def punch(client: Client, message: Message, out: bool = False) -> None:
         )
         return
 
-    await message.reply_text(f'out: {out}')
     await message.reply_text('Done.')
 
 
