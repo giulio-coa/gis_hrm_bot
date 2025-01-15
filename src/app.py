@@ -1,5 +1,5 @@
 from asyncio import sleep
-from logging import DEBUG, basicConfig
+from logging import INFO, basicConfig
 from os import environ
 from sys import exit
 
@@ -19,7 +19,7 @@ from .plugins import clean_messages, manage_jobs, punch, start, update_credentia
 
 
 if __name__ == '__main__':
-    basicConfig(level=DEBUG)
+    basicConfig(level=INFO)
 
     config = {
         **environ,
