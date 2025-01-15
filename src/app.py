@@ -1,6 +1,5 @@
 from asyncio import sleep
-from logging import INFO, basicConfig
-from os import environ
+from logging import INFO, basicConfig, info
 from sys import exit
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -17,14 +16,17 @@ from .plugins import clean_messages, manage_jobs, punch, start, update_credentia
 
 
 if __name__ == '__main__':
-    basicConfig(level=INFO)
+    basicConfig(
+        datefmt='%Y-%m-%d %H:%M:%S',
+        format='%(asctime)s - %(levelname)s - gis-hrm-bot - %(message)s',
+        level=INFO
+    )
 
-    config = {
-        **environ,
-        **dotenv_values(
-            find_dotenv(raise_error_if_not_found=True, usecwd=True)
-        ),
-    }
+    config = dotenv_values(
+        find_dotenv(raise_error_if_not_found=True, usecwd=True)
+    )
+
+    info('config: {}'.format(config))
 
     for key in [
         'API_ID',
@@ -113,32 +115,32 @@ async def main():
             )
         )
 
+        info('Handler registered.')
+
         # Register scheduler
         scheduler = AsyncIOScheduler()
         scheduler.add_job(
             punch,
-            trigger=CronTrigger.from_crontab('* * * * *'),
-            # trigger=CronTrigger.from_crontab('0 9,14 * * 1-5'),
+            trigger=CronTrigger.from_crontab('0 9,14 * * 1-5'),
             id='punch - in',
             name='punch - in',
             kwargs={
                 'client': app,
-                'message': None,
             }
         )
         scheduler.add_job(
             punch,
-            trigger=CronTrigger.from_crontab('* * * * *'),
-            # trigger=CronTrigger.from_crontab('0 13,18 * * 1-5'),
+            trigger=CronTrigger.from_crontab('0 13,18 * * 1-5'),
             id='punch - off',
             name='punch - off',
             kwargs={
                 'client': app,
-                'message': None,
                 'out': True,
             }
         )
         scheduler.start()
+
+        info('Scheduler registered.')
 
         while True:
             await sleep(1000)
