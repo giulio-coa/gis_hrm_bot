@@ -2,7 +2,6 @@ apscheduler
 holidays
 pyrogram
 python-dotenv
-pytz
 requests
 tgcrypto
 uvloop

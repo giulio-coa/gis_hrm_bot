@@ -1,7 +1,13 @@
 FROM python:3-slim
 
+ENV TIMEZONE='Europe/Rome'
+
 RUN apt update \
-  && apt install --assume-yes gcc
+  && apt install --assume-yes gcc tzdata && \
+  ln --symbolic --force "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime && \
+  echo "${TIMEZONE}" > /etc/timezone && \
+  apt clean && \
+  rm --recursive --force /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 

@@ -11,8 +11,6 @@ from dotenv import dotenv_values, find_dotenv
 from pyrogram import Client, enums, filters
 from pyrogram.handlers import MessageHandler
 
-from pytz import timezone
-
 from uvloop import install
 
 from .plugins import clean_messages, manage_jobs, punch, start, update_credentials
@@ -116,7 +114,7 @@ async def main():
         )
 
         # Register scheduler
-        scheduler = AsyncIOScheduler(timezone=timezone('Europe/Rome'))
+        scheduler = AsyncIOScheduler()
         scheduler.add_job(
             punch,
             trigger=CronTrigger.from_crontab('* * * * *'),
