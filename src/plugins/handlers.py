@@ -189,3 +189,5 @@ async def update_credentials(_, message: Message) -> None:
         return
 
     await set_env_vars(message, key, message.command[2])
+
+    await message.delete(revoke=True)
