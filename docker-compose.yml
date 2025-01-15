@@ -1,0 +1,17 @@
+services:
+  bot:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: bot
+    networks:
+      base:
+        ipv4_address: 172.20.50.2
+    restart: unless-stopped
+
+networks:
+  base:
+    ipam:
+      config:
+        - subnet: 172.20.50.0/24
+          gateway: 172.20.50.1
