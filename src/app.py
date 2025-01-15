@@ -74,8 +74,10 @@ async def main():
         app.add_handler(
             MessageHandler(
                 clean_messages,
-                filters.regex('^⁠$')
+                filters.chat(config.get('MY_ID'))
                 & filters.outgoing
+                & filters.private
+                & filters.regex('^⁠$')
             )
         )
         app.add_handler(
