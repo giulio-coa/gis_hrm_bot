@@ -8,6 +8,10 @@ services:
       base:
         ipv4_address: 172.20.50.2
     restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./.env
+        target: /usr/src/app/.env
 
 networks:
   base:
