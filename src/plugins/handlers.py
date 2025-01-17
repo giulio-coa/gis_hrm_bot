@@ -43,8 +43,8 @@ async def manage_jobs(_, message: Message) -> None:
         return
 
     value = {
-        'disable': 'false',
-        'enable': 'true',
+        'disable': 'true',
+        'enable': 'false',
     }.get(message.command[1])
 
     if not value:
