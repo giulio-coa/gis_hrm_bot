@@ -28,7 +28,7 @@ class GIS_HRM_API:
                 'Missing password parameter in the initialization of the class GIS_HRM_API.'
             )
 
-        self.url = f"{url.rstrip('/')}/"
+        self.url = f"{url.rstrip('/')}/server/ws/"
         self.username = username
         self.password = password
         self.token = None
