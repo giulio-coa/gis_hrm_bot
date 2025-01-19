@@ -196,6 +196,8 @@ async def start(_, message: Message) -> None:
         )
     )
 
+    await message.delete(revoke=True)
+
 
 async def update_credentials(_, message: Message) -> None:
     info('Received message:\n{}'.format(message))
