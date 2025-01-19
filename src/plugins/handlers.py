@@ -62,6 +62,7 @@ async def config(_, message: Message) -> None:
     info('Deleted message:\n{}'.format(sent_message))
 
     await sent_message.delete(revoke=True)
+    await message.delete(revoke=True)
 
 
 async def manage_jobs(_, message: Message) -> None:
