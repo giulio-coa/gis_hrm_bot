@@ -187,10 +187,8 @@ async def start(_, message: Message) -> None:
         reply_markup=ReplyKeyboardMarkup(
             [
                 [
-                    '/punch in',
-                ],
-                [
-                    '/punch out',
+                    '/manage_jobs disable',
+                    '/manage_jobs enable',
                 ],
             ],
             is_persistent=True,
