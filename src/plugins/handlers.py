@@ -1,4 +1,6 @@
+from asyncio import sleep
 from datetime import datetime
+from json import dumps
 from logging import info
 from typing import Any
 
@@ -33,6 +35,35 @@ async def set_env_vars(message: Message, key: str, value: Any) -> None:
 ############
 # Handlers #
 ############
+async def config(_, message: Message) -> None:
+    info('Received message:\n{}'.format(message))
+
+    _config = dotenv_values(
+        find_dotenv(raise_error_if_not_found=True, usecwd=True)
+    )
+
+    # If I set the variable to a chat ID, I must convert it to a number
+    try:
+        _config['MY_ID'] = int(_config.get('MY_ID'))
+    except:
+        pass
+
+    info('_config: {}'.format(_config))
+
+    sent_message = await message.reply_text(
+        'Actual config\n<pre language="json">{}</pre>\nYou have 5 seconds to check it.'.format(
+            dumps(_config, indent=2)
+        ),
+        disable_web_page_preview=True
+    )
+
+    await sleep(5)
+
+    info('Deleted message:\n{}'.format(sent_message))
+
+    await sent_message.delete(revoke=True)
+
+
 async def manage_jobs(_, message: Message) -> None:
     info('Received message:\n{}'.format(message))
 
@@ -64,17 +95,17 @@ async def punch(client: Client, message: Message = None, out: bool = False) -> N
         info('Message:\n{}'.format(message))
         info('out: {}'.format(out))
 
-    config = dotenv_values(
+    _config = dotenv_values(
         find_dotenv(raise_error_if_not_found=True, usecwd=True)
     )
 
-    info('config: {}'.format(config))
-
     # If I set the variable to a chat ID, I must convert it to a number
     try:
-        config['MY_ID'] = int(config.get('MY_ID'))
+        _config['MY_ID'] = int(_config.get('MY_ID'))
     except:
         pass
+
+    info('_config: {}'.format(_config))
 
     if message:
         if len(message.command) != 2:
@@ -105,15 +136,15 @@ async def punch(client: Client, message: Message = None, out: bool = False) -> N
         return
     # If I'm here, is a scheduled job
     # I want exit if I have disabled the jobs
-    elif config.get('DISABLE_JOBS', 'true') == 'true':
+    elif _config.get('DISABLE_JOBS', 'true') == 'true':
         info('Skip because the jobs are disabled.')
         return
 
     try:
         api = GIS_HRM_API(
-            config.get('ENDPOINT'),
-            config.get('USERNAME'),
-            config.get('PASSWORD')
+            _config.get('ENDPOINT'),
+            _config.get('USERNAME'),
+            _config.get('PASSWORD')
         )
 
         api.punch(out)
@@ -122,7 +153,7 @@ async def punch(client: Client, message: Message = None, out: bool = False) -> N
     except Exception as e:
         if not message:
             await client.send_message(
-                chat_id=config.get('MY_ID'),
+                chat_id=_config.get('MY_ID'),
                 text='<strong>Scheduled action.</strong>\n<em>Command:</em> <code>/punch {}</code>\n<em>Result:</em> Failed.\n<em>Exception:</em> {}'.format(
                     'out' if out else 'in',
                     e
@@ -135,7 +166,7 @@ async def punch(client: Client, message: Message = None, out: bool = False) -> N
 
     if not message:
         await client.send_message(
-            chat_id=config.get('MY_ID'),
+            chat_id=_config.get('MY_ID'),
             text='<strong>Scheduled action.</strong>\n<em>Command:</em> <code>/punch {}</code>\n<em>Result:</em> Done.'.format(
                 'out' if out else 'in'
             )
