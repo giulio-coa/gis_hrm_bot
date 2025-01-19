@@ -10,6 +10,8 @@ from dotenv import dotenv_values, find_dotenv
 from pyrogram import Client, enums, filters
 from pyrogram.handlers import MessageHandler
 
+from pytz import timezone
+
 from uvloop import install
 
 from .plugins import config, manage_jobs, punch, start, update_credentials
@@ -120,7 +122,7 @@ async def main():
         info('Handler registered.')
 
         # Register scheduler
-        scheduler = AsyncIOScheduler()
+        scheduler = AsyncIOScheduler(timezone=timezone('Europe/Rome'))
         scheduler.add_job(
             punch,
             trigger=CronTrigger.from_crontab('0 9,14 * * 1-5'),
