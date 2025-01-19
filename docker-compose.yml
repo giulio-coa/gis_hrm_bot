@@ -3,7 +3,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: bot
+    container_name: gis_hrm_bot
     networks:
       base:
         ipv4_address: 172.20.50.2
