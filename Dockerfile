@@ -6,7 +6,7 @@ RUN apt update \
   && apt install --assume-yes gcc tzdata && \
   ln --symbolic --force "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone && \
-  apt clean && \
+  apt clean all --assume-yes && \
   rm --recursive --force /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
