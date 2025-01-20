@@ -52,7 +52,12 @@ async def config(_, message: Message) -> None:
 
     sent_message = await message.reply_text(
         'Actual config\n<pre language="json">{}</pre>\nYou have 5 seconds to check it.'.format(
-            dumps(_config, indent=2)
+            dumps(
+                {key: value
+                 for key, value in _config.items()
+                 if key not in ['API_ID', 'API_HASH', 'TOKEN', 'MY_ID', ]},
+                indent=2
+            )
         ),
         disable_web_page_preview=True
     )
