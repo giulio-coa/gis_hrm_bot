@@ -11,6 +11,8 @@ from holidays import Italy
 from pyrogram import Client
 from pyrogram.types import Message, ReplyKeyboardMarkup
 
+from pytz import timezone
+
 from ..libraries import GIS_HRM_API
 
 
@@ -111,7 +113,10 @@ async def punch(client: Client, message: Message = None, out: bool = False) -> N
     except:
         pass
 
+    now = datetime.now(timezone('Europe/Rome'))
+
     info('_config: {}'.format(_config))
+    info('now: {}'.format(now.strftime('%Y-%m-%d %H:%M:%S')))
 
     if message:
         if len(message.command) != 2:
@@ -137,7 +142,7 @@ async def punch(client: Client, message: Message = None, out: bool = False) -> N
             return
     # If I'm here, is a scheduled job
     # I want exit if is an holiday
-    elif datetime.now().date() in Italy(years=datetime.now().year).keys():
+    elif now.date() in Italy(years=now.year).keys():
         info('Skip because is a holiday.')
         return
     # If I'm here, is a scheduled job
