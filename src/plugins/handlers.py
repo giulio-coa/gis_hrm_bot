@@ -23,8 +23,7 @@ async def set_env_vars(message: Message, key: str, value: Any) -> None:
     res, _, _ = set_key(
         find_dotenv(raise_error_if_not_found=True, usecwd=True),
         key,
-        f'"{value}"',
-        quote_mode='never'
+        value
     )
 
     if not res:
